@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1756197304576" clover="3.2.0">
-  <project timestamp="1756197304577" name="All files">
+<coverage generated="1756214277654" clover="3.2.0">
+  <project timestamp="1756214277654" name="All files">
     <metrics statements="5" coveredstatements="1" conditionals="2" coveredconditionals="0" methods="2" coveredmethods="0" elements="9" coveredelements="1" complexity="0" loc="5" ncloc="5" packages="1" files="1" classes="1"/>
     <file name="mwst.js" path="C:\Users\sebas\Desktop\Kursinhalte\2025\08-August\HA25082025\mwst.js">
       <metrics statements="5" coveredstatements="1" conditionals="2" coveredconditionals="0" methods="2" coveredmethods="0"/>

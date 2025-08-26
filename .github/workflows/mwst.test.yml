@@ -16,12 +16,12 @@ jobs:
 
             - name: install dependencies
               run: |
-                cd ha25082025 
+                cd HA25082025 
                 npm install
 
             - name: test
               run: |
-                cd ha25082025
+                cd HA25082025
                 npm test
     deploy:
         needs: test

@@ -6,6 +6,14 @@ jobs:
     test:
         runs-on: ubuntu-latest
         steps:
+            - name: message_from_slack
+              uses: slackapi/slack-github-action@v2.1.1
+              with:
+                webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
+                webhook-type: incoming-webhook
+                payload: |
+                  text: "Pipeline wurde soeben gestartet. Pipeline: ${{github.workflow}}"
+
             - name: checkout
               uses: actions/checkout@v5
             
@@ -23,6 +31,30 @@ jobs:
               run: |
                 cd HA25082025
                 npm test
+
+            - name: coverage upload
+              uses: actions/upload-artifact@v4
+              with: 
+                name: coverage-report
+                path: HA25082025/coverage
+
+            - name: slack_success
+              if: ${{success()}}
+              uses: slackapi/slack-github-action@v2.1.1
+              with:
+                webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
+                webhook-type: incoming-webhook
+                payload: |
+                  text: "Job erfolgreich"
+
+            - name: slack_failure
+              if: ${{failure()}}
+              uses: slackapi/slack-githib-action@v2.1.1
+              with:
+                webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
+                webhook-type: incoming-webhook
+                payload: |
+                  text: "Job fehlgeschlagen"
     deploy:
         needs: test
         runs-on: ubuntu-latest

@@ -50,6 +50,6 @@ jobs:
           for ip in ${{ secrets.EC2_IPs }}; do
             echo "Deploy nach $ip..."
             ssh-keyscan -H $ip >> ~/.ssh/known_hosts
-            scp -i ~/.ssh/meinPrivateKey ./HA25082025/index.html ubuntu@$ip:/home/ubuntu/index.html
+            scp -i ~/.ssh/meinPrivateKey index.html ubuntu@$ip:/home/ubuntu/index.html
             ssh -i ~/.ssh/meinPrivateKey ubuntu@$ip "sudo cp /home/ubuntu/index.html /var/www/html/index.html"
           done

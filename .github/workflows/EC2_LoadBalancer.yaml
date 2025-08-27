@@ -47,7 +47,7 @@ jobs:
 
       - name: Kopiere index.html zu allen EC2-Instanzen
         run: |
-          for ip in ${{ secrets.EC2_IPs }}; do
+          for ip in ${{ secrets.EC2_IPS }}; do
             echo "Deploy nach $ip..."
             ssh-keyscan -H $ip >> ~/.ssh/known_hosts
             scp -i ~/.ssh/meinPrivateKey index.html ubuntu@$ip:/home/ubuntu/index.html

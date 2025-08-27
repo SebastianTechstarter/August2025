@@ -1,0 +1,56 @@
+name: EC2_LoadBalancer
+
+on: 
+  push
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v5
+
+      - name: Setup Nodejs
+        uses: actions/setup-node@v4
+        with: 
+          node-version: "20"
+          registry-url: https://registry.npmjs.org/
+
+      - name: install dependencies
+        run: |
+          cd HA25082025 
+          npm install
+
+      - name: test
+        run: |
+          cd HA25082025
+          npm test
+
+      - name: coverage upload
+        uses: actions/upload-artifact@v4
+        with: 
+          name: coverage-report
+          path: HA25082025/coverage
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v5
+
+      - name: SSH Setup
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/meinPrivateKey
+          chmod 400 ~/.ssh/meinPrivateKey
+
+      - name: Kopiere index.html zu allen EC2-Instanzen
+        run: |
+          18.185.139.66 35.158.119.39 3.78.190.37 52.59.207.207
+          for ip in ${{ secrets.EC2_IPs }}; do
+            echo "Deploy nach $ip..."
+            ssh-keyscan -H $ip >> ~/.ssh/known_hosts
+            scp -i ~/.ssh/meinPrivateKey ./index.html ubuntu@$ip:/home/ubuntu/index.html
+            ssh -i ~/.ssh/meinPrivateKey ubuntu@$ip "sudo cp /home/ubuntu/index.html /var/www/html/index.html"
+          done

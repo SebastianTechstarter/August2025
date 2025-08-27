@@ -47,7 +47,6 @@ jobs:
 
       - name: Kopiere index.html zu allen EC2-Instanzen
         run: |
-          18.185.139.66 35.158.119.39 3.78.190.37 52.59.207.207
           for ip in ${{ secrets.EC2_IPs }}; do
             echo "Deploy nach $ip..."
             ssh-keyscan -H $ip >> ~/.ssh/known_hosts
